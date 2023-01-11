@@ -16,7 +16,7 @@
 
         public double? Longitude { get; set; }
 
-        public int Pincode { get; set; }
+        public int? Pincode { get; set; }
 
         public long? PhoneNumber { get; set; }
     }

@@ -8,6 +8,8 @@ using System.Net.Http.Json;
 using javax.security.auth.spi;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using javax.xml.crypto;
+using java.beans;
+
 namespace MVC.Controllers
 {
     public class ContractorController : Controller
@@ -63,17 +65,25 @@ namespace MVC.Controllers
             try
             {
                 CrudStatus crudStatus=new CrudStatus();
-                //HttpResponseMessage responseMessage= await client.PutAsJsonAsync<ContractorDetail>(url+ "Contractor/CreateContractor").Result;
-                //string result=responseMessage.Content.ReadAsStringAsync().Result;
-                var result = await client.PutAsJsonAsync<ContractorDetail>(url + "Contractor/CreateContractor", contractorDetail);
-                string data = result.Content.ReadAsStringAsync().Result;
-                contractorDetail = JsonConvert.DeserializeObject<ContractorDetail>(data)!;
-                if (result.IsSuccessStatusCode)
+                ContractorDetail contractor= new ContractorDetail();
+                HttpResponseMessage responseMessage = client.PutAsJsonAsync(url + "Contractor/CreateContractor", contractorDetail).Result;
+                string data = responseMessage.Content.ReadAsStringAsync().Result;
+                status = JsonConvert.DeserializeObject<CrudStatus>(data)!;
+                if (responseMessage.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index", "Contractor");
+                    if (status.Status == false)
+                    {
+                        ModelState.AddModelError(string.Empty, status.Message!);
+                        return View(contractorDetail);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Contractor");
+                    }
                 }
-                ModelState.AddModelError(string.Empty, status.Message);
+                ModelState.AddModelError(string.Empty, "Server Error");
                 return View(contractorDetail);
+               
             }
             catch (Exception ex)
             {
@@ -117,7 +127,84 @@ namespace MVC.Controllers
             {
                 return View(ex.Message);
             }
-        } 
+        }
 
+        //public ActionResult DeleteContractor(string License)
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ActionName("DeleteContractor")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> DeleteContractor(string License, ContractorDetail contractor)
+        //{
+        //    try
+        //    {
+        //        ContractorDetail con = new ContractorDetail();
+        //        //contractor.License = license;
+        //        CrudStatus crudStatus = new CrudStatus();
+        //        //HttpResponseMessage responseMessage = client.DeleteAsync(url + "Contractor/DeleteContractor").Result;
+        //        HttpResponseMessage responseMessage = client.DeleteAsync(url + "Contractor/DeleteContractor?License=" + License).Result;
+        //        string data = responseMessage.Content.ReadAsStringAsync().Result;
+        //        status = JsonConvert.DeserializeObject<CrudStatus>(data)!;
+        //        if (responseMessage.IsSuccessStatusCode)
+        //        {
+        //            if (status.Status == false)
+        //            {
+        //                ModelState.AddModelError(string.Empty, status.Message!);
+        //                return View();
+        //            }
+        //            else
+        //            {
+        //                return RedirectToAction("Index", "Contractor");
+        //            }
+        //        }
+        //        ModelState.AddModelError(string.Empty, "Server Error");
+        //        return View();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return View(ex.Message);
+        //    }
+        //}
+        //public ActionResult DeleteContractor(string License)
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //[ActionName("DeleteContractor")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteContractor(string License, ContractorDetail contractor)
+        //{
+        //    try
+        //    {
+        //        ContractorDetail con = new ContractorDetail();
+        //        contractor.License = License;
+        //        var data = client.DeleteAsync(url + "Contractor/DeleteContractor?License=" + License);
+        //        data.Wait();
+        //        var result = data.Result;
+        //        var resultMessage = result.Content.ReadAsStringAsync().Result;
+        //        status = JsonConvert.DeserializeObject<CrudStatus>(resultMessage);
+        //        if (result.IsSuccessStatusCode)
+        //        {
+        //            if (status.Status == true)
+        //            {
+        //                ModelState.AddModelError(string.Empty, status.Message);
+        //                return RedirectToAction("Index", "Contractor");
+        //            }
+        //            else
+        //            {
+        //                ModelState.AddModelError(string.Empty, status.Message!);
+        //                return View();
+        //            }
+        //        }
+        //        ModelState.AddModelError(string.Empty, "Server Error");
+        //        return View();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return View(ex.Message);
+        //    }
+        //}
     }
 }

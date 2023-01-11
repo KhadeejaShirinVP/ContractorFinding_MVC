@@ -1,21 +1,15 @@
 ﻿@model IEnumerable<MVC.Models.ContractorGetModule>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "SearchingByPincode";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>SearchingByPincode</h1>
 
-<p>
-    <a asp-controller="Contractor" asp-action="AddingDetails">Create Contractor Details</a>
-</p>
-<p>
-    <a asp-controller="Contractor" asp-action="UpdateDetails">Update Contractor Details</a>
-</p>
-<p>
-    <a asp-controller="Contractor" asp-action="DeleteContractor">Delete Contractor Details</a>
-</p>
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
 <table class="table">
     <thead>
         <tr>
@@ -79,17 +73,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
-           @* <td>
+          @*  <td>
                 @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
             </td>*@
-                <td class="w-75 btn-group" role="group">
-                    @*<a asp-controller="Book" asp-action="Edit" asp-route-bookId="@obj.Book_ID"
-                   class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i>Edit</a>*@
-                    <a asp-controller="Contractor" asp-action="DeleteContractor" asp-route-License="@item.License"
-                   class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i>Delete</a>
-                </td>
         </tr>
 }
     </tbody>
