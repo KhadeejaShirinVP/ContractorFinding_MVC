@@ -11,6 +11,14 @@ builder.Services.AddHttpClient(".")
 
 });
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(1800);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 //builder.Services.AddHttpClient("someClient", c =>
 //{
 //    c.BaseAddress = new Uri("https://localhost:7294/api/");
@@ -35,6 +43,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
+
+
 
 app.MapControllerRoute(
     name: "default",
