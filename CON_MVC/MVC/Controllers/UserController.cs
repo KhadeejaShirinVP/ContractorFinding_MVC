@@ -71,8 +71,7 @@ namespace MVC.Controllers
                 registration = JsonConvert.DeserializeObject<Registration>(data)!;
                 if (result.IsSuccessStatusCode)
                 {
-
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("UserLogin", "User");
                 }
                 ModelState.AddModelError(string.Empty, "Server Error");
                 return View(registration);
