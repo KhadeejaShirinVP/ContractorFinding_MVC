@@ -83,15 +83,15 @@ namespace MVC.Controllers
         }
 
         //For User Login
-        public ActionResult UserLogin()
+        public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        [ActionName("UserLogin")]
+        [ActionName("Login")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UserLogin(Login login)
+        public async Task<ActionResult> Login(Login login)
         {
             try
             {
@@ -102,12 +102,12 @@ namespace MVC.Controllers
                 status = JsonConvert.DeserializeObject<CrudStatus>(result)!;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    if (status.Status == false)
-                    {
-                        ModelState.AddModelError(string.Empty, status.Message!);
-                        return View(login);
-                    }
-                    return RedirectToAction("Index", "User");
+                    //if (status.Status == false)
+                    //{
+                    //    ModelState.AddModelError(string.Empty, status.Message!);
+                    //    return View(login);
+                    //}
+                    return RedirectToAction("UserShow", "User");
                 }
                 ModelState.AddModelError(string.Empty, "server Error");
                 return View(login);
@@ -116,6 +116,45 @@ namespace MVC.Controllers
             {
                 return View(ex.Message);
             }
+        }
+        //public ActionResult UserLogin()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //[ActionName("UserLogin")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> UserLogin(Login login)
+        //{
+        //    try
+        //    {
+        //        Login log = new Login();
+        //        CrudStatus crudStatus = new CrudStatus();
+        //        HttpResponseMessage responseMessage = client.PostAsJsonAsync(url + "User/LoginUser", login).Result;
+        //        string result = responseMessage.Content.ReadAsStringAsync().Result;
+        //        status = JsonConvert.DeserializeObject<CrudStatus>(result)!;
+        //        if (responseMessage.IsSuccessStatusCode)
+        //        {
+        //            //if (status.Status == false)
+        //            //{
+        //            //    ModelState.AddModelError(string.Empty, status.Message!);
+        //            //    return View(login);
+        //            //}
+        //            return RedirectToAction("UserShow","User");
+        //        }
+        //        ModelState.AddModelError(string.Empty, "server Error");
+        //        return View(login);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return View(ex.Message);
+        //    }
+        //}
+
+        public ActionResult UserShow()
+        {
+            return View();
         }
 
         //For Updating password
